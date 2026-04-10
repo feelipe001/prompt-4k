@@ -13,7 +13,7 @@
         .text-center { text-align: center; }
         .header-text { font-size: 0.9rem; color: #aaaaaa; padding: 15px 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* ================= Estilos do Reprodutor (Intactos) ================= */
+        /* ================= Estilos do Reprodutor ================= */
         #vsl-container { position: relative; max-width: 100%; height: auto; }
         .video-wrapper { position: relative; width: 100%; padding-top: 56.25%; }
         #player-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
@@ -117,12 +117,12 @@
         .benefits li { margin-bottom: 10px; font-size: 1rem; color: #ccc; }
         .benefits li::before { content: '✅'; margin-right: 8px; }
 
-        /* ================= GARANTIA (NOVO) ================= */
+        /* ================= GARANTIA ================= */
         .guarantee-session {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
             padding: 25px 15px;
-            margin: 20px 0 30px 0;
+            margin: 25px 0 40px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -254,18 +254,19 @@
             </ul>
         </div>
 
-        <a href="LINK_DO_SEU_CHECKOUT_AQUI" class="btn btn-unlocked" style="margin-bottom: 30px;">
+        <a href="LINK_DO_SEU_CHECKOUT_AQUI" class="btn btn-unlocked">
             👉 Quero recuperar minhas fotos agora
         </a>
-    </div>
-</div>
 
-    <div class="guarantee-session">
+        <div class="guarantee-session">
             <img src="https://via.placeholder.com/150x150/050505/00d856?text=GARANTIA" alt="Garantia de 90 dias" class="guarantee-img">
             <h4>90 Dias de Garantia Incondicional</h4>
             <p>Eu confio tanto no meu prompt que te dou 3 meses para testar. Se você não gostar do resultado em suas fotos, eu devolvo 100% do seu dinheiro. Sem perguntas.</p>
         </div>
-    
+
+    </div>
+</div>
+
 <script>
   let tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
@@ -346,20 +347,16 @@
         const wrapper = document.getElementById('feedback-wrapper');
         scrollTimer = setInterval(() => {
             const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
-            // Se chegou no final, volta pro começo. Se não, avança pro próximo card.
             if (wrapper.scrollLeft >= maxScroll - 10) {
                 wrapper.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
-                // Rola o tamanho de 1 card (85% da tela + gap de 15px)
                 wrapper.scrollBy({ left: wrapper.clientWidth * 0.85 + 15, behavior: 'smooth' });
             }
-        }, 3500); // Rola a cada 3.5 segundos
+        }, 3500);
     }
 
     const wrapper = document.getElementById('feedback-wrapper');
-    // Se o usuário colocar o dedo, pausa a rolagem automática para ele conseguir ler
     wrapper.addEventListener('touchstart', () => clearInterval(scrollTimer), {passive: true});
-    // Quando ele soltar, a rolagem volta depois de 4 segundos
     wrapper.addEventListener('touchend', () => { 
         clearInterval(scrollTimer);
         setTimeout(startFeedbackScroll, 4000); 
@@ -372,7 +369,6 @@
             hiddenContent.classList.add('show');
             setTimeout(() => { 
                 hiddenContent.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
-                // Inicia o carrossel automático apenas quando o conteúdo é revelado
                 startFeedbackScroll();
             }, 100);
         }
