@@ -1,324 +1,305 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Recupere suas fotos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Recupere Suas Memórias</title>
+    <style>
+        /* ================= Reset e Variáveis ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #050505; color: #ffffff; display: flex; justify-content: center; }
+        
+        /* ================= Layout Mobile ================= */
+        .mobile-container { width: 100%; max-width: 480px; background: #111111; min-height: 100vh; position: relative; overflow-x: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
+        .text-center { text-align: center; }
+        
+        /* ================= Topo e Vídeo ================= */
+        .header-text { font-size: 0.9rem; color: #aaaaaa; padding: 15px 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .video-wrapper { position: relative; width: 100%; padding-bottom: 177.77%; /* Formato Vertical 9:16 (shorts) ou mude para 56.25% para 16:9 */ height: 0; background: #000; overflow: hidden; }
+        /* Ajuste para 16:9 padrão do YouTube caso o vídeo seja horizontal: padding-bottom: 56.25%; */
+        
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; /* Impede clique direto no iframe */ }
+        
+        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); }
+        
+        .unmute-btn { background: rgba(0, 216, 86, 0.9); color: #000; padding: 12px 24px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(0,216,86,0.4); animation: pulse-green 2s infinite; }
+        
+        .pause-icon { background: rgba(0, 0, 0, 0.7); color: #fff; padding: 15px; border-radius: 50%; font-size: 1.5rem; display: none; }
+        
+        .progress-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 6px; background: rgba(255,255,255,0.2); z-index: 20; }
+        .progress-bar { height: 100%; width: 0%; background: #00d856; transition: width 0.1s linear; }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b0b0b;
-  color: #fff;
-  text-align: center;
-}
+        /* ================= Botões ================= */
+        .btn-wrapper { padding: 20px; }
+        .btn { display: block; width: 100%; padding: 18px; border-radius: 8px; font-size: 1.2rem; font-weight: 800; text-align: center; text-decoration: none; border: none; transition: all 0.3s ease; }
+        
+        .btn-locked { background: #222; color: #666; cursor: not-allowed; }
+        
+        .btn-unlocked { background: #00d856; color: #000; cursor: pointer; animation: pulse-green 2s infinite; }
+        
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(0, 216, 86, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 216, 86, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 216, 86, 0); }
+        }
 
-.container {
-  padding: 20px;
-}
+        /* ================= Conteúdo Oculto (Pós-Desbloqueio) ================= */
+        .hidden-content { display: none; opacity: 0; padding: 0 20px 40px 20px; transition: opacity 1s ease-in; }
+        .hidden-content.show { display: block; opacity: 1; }
 
-.video {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 12px;
-}
+        /* ================= Slider Antes/Depois ================= */
+        .slider-section { margin: 30px 0; }
+        .slider-container { position: relative; width: 100%; height: 350px; background: #222; border-radius: 12px; overflow: hidden; border: 2px solid #333; }
+        .slider-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .img-after { clip-path: inset(0 50% 0 0); }
+        .slider-handle { position: absolute; top: 0; left: 50%; width: 4px; height: 100%; background: #00d856; transform: translateX(-50%); cursor: ew-resize; z-index: 5; display: flex; align-items: center; justify-content: center; }
+        .slider-handle-btn { width: 36px; height: 36px; background: #00d856; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; font-size: 14px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
 
-#btn {
-  margin-top: 15px;
-  padding: 15px;
-  width: 90%;
-  max-width: 350px;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  background: gray;
-  color: #fff;
-  cursor: not-allowed;
-  transition: 0.3s;
-}
-
-#btn.active {
-  background: linear-gradient(45deg, #00ff88, #00ccff);
-  cursor: pointer;
-  box-shadow: 0 0 15px rgba(0,255,150,0.6);
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.hidden {
-  display: none;
-}
-
-/* Slider */
-.slider-container {
-  margin-top: 30px;
-}
-
-.slider {
-  position: relative;
-  width: 90%;
-  max-width: 400px;
-  margin: auto;
-}
-
-.slider img {
-  width: 100%;
-  border-radius: 12px;
-}
-
-.after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  overflow: hidden;
-}
-
-input[type=range] {
-  width: 90%;
-  margin-top: 10px;
-}
-
-.section {
-  margin-top: 30px;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.8s forwards;
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.price {
-  font-size: 28px;
-  color: #00ff88;
-  font-weight: bold;
-}
-</style>
+        /* ================= Textos e Oferta ================= */
+        .scannable-texts { margin: 30px 0; display: flex; flex-direction: column; gap: 15px; }
+        .scan-item { background: #1a1a1a; padding: 15px; border-radius: 8px; border-left: 4px solid #00d856; font-weight: 600; font-size: 1.05rem; }
+        
+        .emotional-text { margin: 30px 0; font-size: 1.2rem; line-height: 1.6; font-style: italic; color: #dddddd; text-align: center; }
+        
+        .offer-box { background: linear-gradient(145deg, #1a1a1a, #0d0d0d); padding: 25px; border-radius: 12px; border: 1px solid #333; text-align: center; margin-bottom: 25px; }
+        .price-old { text-decoration: line-through; color: #888; font-size: 1.1rem; }
+        .price-new { font-size: 2.5rem; color: #00d856; font-weight: 900; margin: 10px 0; }
+        .benefits { list-style: none; margin-top: 15px; text-align: left; }
+        .benefits li { margin-bottom: 10px; font-size: 1rem; color: #ccc; }
+        .benefits li::before { content: '✅'; margin-right: 8px; }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="mobile-container">
+    <div class="header-text text-center">
+        Assista até o final para desbloquear
+    </div>
 
-  <p>Assista até o final para desbloquear</p>
-
-  <!-- VIDEO -->
- <div id="contextBlocker" style="position:relative; width:100%; max-width:400px; margin:auto;">
-
-  <!-- PLAYER -->
-  <div id="player" style="width:100%; height:220px; border-radius:12px; overflow:hidden;"></div>
-
-  <!-- BARRA DE PROGRESSO -->
-  <div style="width:100%; height:4px; background:#333; margin-top:5px;">
-    <div id="progressBar" style="width:0%; height:100%; background:#00ff88;"></div>
-  </div>
-
-  <!-- OVERLAY SOM -->
-  <div id="audioOverlay" style="
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,0.6);
-    border-radius:12px;
-  ">
-    <button id="unmuteBtn">🔊 Ativar som</button>
-  </div>
-
-  <!-- OVERLAY PAUSE -->
-  <div id="pauseOverlay" style="
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,0.6);
-    border-radius:12px;
-  ">
-    <button id="resumeBtn">▶ Continuar</button>
-  </div>
-
-</div>
-  <!-- CONTADOR -->
-  <p id="count">Liberando acesso em 60s...</p>
-
-  <!-- BOTÃO -->
-  <button id="btn">🔒 Conteúdo bloqueado</button>
-
-  <!-- CONTEÚDO -->
-  <div id="content" class="hidden">
-
-    <div class="section">
-      <h3>Arraste para ver a diferença</h3>
-
-      <div class="slider">
-        <img src="antes.jpg">
-        <div class="after" id="after">
-          <img src="depois.jpg">
+    <div class="video-wrapper" id="video-container">
+        <div id="yt-player"></div>
+        
+        <div class="video-overlay" id="video-overlay">
+            <div class="unmute-btn" id="unmute-btn">
+                🔊 Toque para Ativar o Som
+            </div>
+            <div class="pause-icon" id="pause-icon">▶</div>
         </div>
-      </div>
 
-      <input type="range" min="0" max="100" value="50" id="range">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
     </div>
 
-    <div class="section">
-      <p>Mesma foto. Totalmente recuperada.</p>
-      <p>Sem edição. Sem conhecimento técnico.</p>
-      <p>Só um prompt.</p>
+    <div class="btn-wrapper">
+        <button id="main-btn" class="btn btn-locked" disabled>
+            🔒 Conteúdo bloqueado
+        </button>
     </div>
 
-    <div class="section">
-      <p>Quantas memórias você ainda tem… mas não consegue enxergar direito?</p>
-      <p>Agora você pode trazer elas de volta.</p>
+    <div class="hidden-content" id="hidden-content">
+        
+        <div class="emotional-text">
+            "Quantas memórias você ainda tem… mas não consegue enxergar direito? <br><br>
+            <strong style="color:#fff;">Agora você pode trazer elas de volta.</strong>"
+        </div>
+
+        <div class="slider-section">
+            <h3 class="text-center" style="margin-bottom: 15px;">Arraste para ver a mágica 👇</h3>
+            <div class="slider-container" id="slider">
+                <img src="https://via.placeholder.com/400x500/333333/ffffff?text=Foto+Antiga+(Ruim)" alt="Antes" class="slider-img img-before">
+                <img src="https://via.placeholder.com/400x500/00d856/000000?text=Foto+Restaurada+(4K)" alt="Depois" class="slider-img img-after" id="img-after">
+                <div class="slider-handle" id="slider-handle">
+                    <div class="slider-handle-btn">⟨⟩</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scannable-texts">
+            <div class="scan-item">✨ Mesma foto. Totalmente recuperada.</div>
+            <div class="scan-item">❌ Sem edição. Sem conhecimento técnico.</div>
+            <div class="scan-item">✅ Só um prompt (copiar e colar).</div>
+        </div>
+
+        <div class="offer-box">
+            <p>Tenha acesso imediato ao prompt:</p>
+            <div class="price-old">De R$ 29,90</div>
+            <div class="price-new">Por R$ 9,90</div>
+            <ul class="benefits">
+                <li>Acesso imediato no e-mail</li>
+                <li>Funciona 100% no celular</li>
+                <li>Não precisa de aplicativos pagos</li>
+            </ul>
+        </div>
+
+        <a href="LINK_DO_SEU_CHECKOUT_AQUI" class="btn btn-unlocked" style="margin-bottom: 30px;">
+            👉 Quero recuperar minhas fotos agora
+        </a>
+
     </div>
-
-    <div class="section">
-      <p><s>De R$29,90</s></p>
-      <p class="price">R$9,90</p>
-    </div>
-
-    <div class="section">
-      <button id="buy" style="padding:15px; width:90%; max-width:350px; border:none; border-radius:10px; background:#00ff88; font-size:16px;">
-        👉 Quero recuperar minhas fotos agora
-      </button>
-    </div>
-
-  </div>
-
 </div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-let time = 60;
-let count = document.getElementById("count");
-let btn = document.getElementById("btn");
-let content = document.getElementById("content");
+    // ================= CONFIGURAÇÕES =================
+    const VIDEO_ID = 'SEU_ID_DO_VIDEO_AQUI'; // Ex: 'dQw4w9WgXcQ'
+    const TEMPO_DESBLOQUEIO_SEGUNDOS = 60; // Tempo em segundos para desbloquear o botão
+    // =================================================
 
-let timer = setInterval(() => {
-  time--;
-  count.innerText = "Liberando acesso em " + time + "s...";
+    let player;
+    let isUnmuted = false;
+    let isUnlocked = false;
+    let progressInterval;
 
-  if (time <= 0) {
-    clearInterval(timer);
-    count.innerText = "Acesso liberado!";
-    btn.classList.add("active");
-    btn.innerText = "👉 Recuperar minhas fotos agora";
-    btn.disabled = false;
-    btn.style.cursor = "pointer";
-  }
-}, 1000);
+    // Bloquear clique direito (Menu de Contexto) em toda a página mobile
+    document.addEventListener('contextmenu', event => event.preventDefault());
 
-btn.addEventListener("click", () => {
-  if (time <= 0) {
-    content.classList.remove("hidden");
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  }
-});
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('yt-player', {
+            videoId: VIDEO_ID,
+            playerVars: {
+                'autoplay': 1,
+                'controls': 0,
+                'disablekb': 1,
+                'fs': 0,
+                'modestbranding': 1,
+                'playsinline': 1,
+                'rel': 0,
+                'mute': 1 // Precisa iniciar mutado para o autoplay funcionar
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
 
-// SLIDER
-let range = document.getElementById("range");
-let after = document.getElementById("after");
+    function onPlayerReady(event) {
+        event.target.playVideo();
+        startProgressTracking();
+    }
 
-range.addEventListener("input", () => {
-  after.style.width = range.value + "%";
-});
-</script>
-<script>
-  let tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.body.appendChild(tag);
+    function onPlayerStateChange(event) {
+        const pauseIcon = document.getElementById('pause-icon');
+        // Se o vídeo pausar e já estiver desmutado, mostra o ícone de play
+        if (event.data == YT.PlayerState.PAUSED && isUnmuted) {
+            pauseIcon.style.display = 'block';
+        } else {
+            pauseIcon.style.display = 'none';
+        }
+    }
 
-  let player, interval;
+    // Lógica do Overlay do Vídeo (Desmutar, Pausar/Despausar)
+    const videoOverlay = document.getElementById('video-overlay');
+    const unmuteBtn = document.getElementById('unmute-btn');
 
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-      videoId: 'Wl4JTfAN91Q',
-      playerVars: {
-        'autoplay': 1,
-        'controls': 0,
-        'mute': 1,
-        'rel': 0,
-        'modestbranding': 1,
-        'showinfo': 0,
-        'enablejsapi': 1,
-        'fs': 0,
-        'playsinline': 1
-      },
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-      }
+    videoOverlay.addEventListener('click', () => {
+        if (!player || !player.getPlayerState) return;
+
+        if (!isUnmuted) {
+            // Primeiro clique: Desmuta, esconde o botão e reinicia o vídeo (opcional para VSL)
+            player.unMute();
+            player.seekTo(0);
+            player.playVideo();
+            unmuteBtn.style.display = 'none';
+            isUnmuted = true;
+        } else {
+            // Próximos cliques: Alterna entre Pausar e Dar Play
+            const state = player.getPlayerState();
+            if (state == YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        }
     });
-  }
 
-  function onPlayerReady(event) {
-    event.target.playVideo();
-    updateProgress();
-  }
+    // Tracking de Progresso e Desbloqueio do Botão
+    function startProgressTracking() {
+        const progressBar = document.getElementById('progress-bar');
+        const mainBtn = document.getElementById('main-btn');
 
-  function updateProgress() {
-    interval = setInterval(() => {
-      if (player && player.getDuration) {
-        const duration = player.getDuration();
-        const current = player.getCurrentTime();
-        const percent = (current / duration) * 100;
-        document.getElementById("progressBar").style.width = percent + "%";
-      }
-    }, 500);
-  }
+        progressInterval = setInterval(() => {
+            if (player && player.getCurrentTime && player.getDuration) {
+                const currentTime = player.getCurrentTime();
+                const duration = player.getDuration();
+                
+                // Atualiza Barra de Progresso
+                if (duration > 0) {
+                    const percent = (currentTime / duration) * 100;
+                    progressBar.style.width = percent + '%';
+                }
 
-  document.getElementById("unmuteBtn").addEventListener("click", () => {
-    player.unMute();
-    player.seekTo(0);
-    player.playVideo();
-    document.getElementById("audioOverlay").style.display = "none";
-  });
-
-  document.getElementById("resumeBtn").addEventListener("click", () => {
-    player.playVideo();
-    document.getElementById("pauseOverlay").style.display = "none";
-  });
-
-  function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.PAUSED) {
-      document.getElementById("pauseOverlay").style.display = "flex";
-    } else {
-      document.getElementById("pauseOverlay").style.display = "none";
+                // Desbloqueia Botão
+                if (currentTime >= TEMPO_DESBLOQUEIO_SEGUNDOS && !isUnlocked) {
+                    isUnlocked = true;
+                    mainBtn.classList.remove('btn-locked');
+                    mainBtn.classList.add('btn-unlocked');
+                    mainBtn.innerHTML = '👉 Recuperar minhas fotos agora';
+                    mainBtn.removeAttribute('disabled');
+                }
+            }
+        }, 500);
     }
-  }
 
-  const blocker = document.getElementById("contextBlocker");
+    // Lógica de Clique no Botão Principal (Aparecer o resto da página)
+    const mainBtn = document.getElementById('main-btn');
+    const hiddenContent = document.getElementById('hidden-content');
 
-  blocker.addEventListener("contextmenu", function (e) {
-    e.preventDefault();
-  });
+    mainBtn.addEventListener('click', () => {
+        if (isUnlocked) {
+            hiddenContent.classList.add('show');
+            // Scroll suave para o conteúdo
+            setTimeout(() => {
+                hiddenContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+            
+            // Opcional: esconder o botão principal se quiser que eles usem apenas o botão de checkout final
+            // mainBtn.style.display = 'none'; 
+        }
+    });
 
-  blocker.addEventListener("click", function () {
-    const state = player.getPlayerState();
-    if (state === YT.PlayerState.PLAYING) {
-      player.pauseVideo();
-    } else {
-      player.playVideo();
+    // Lógica do Slider Antes/Depois
+    const slider = document.getElementById('slider');
+    const imgAfter = document.getElementById('img-after');
+    const sliderHandle = document.getElementById('slider-handle');
+    let isDragging = false;
+
+    function moveSlider(e) {
+        const rect = slider.getBoundingClientRect();
+        // Suporta tanto toque mobile quanto mouse
+        let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        
+        let x = clientX - rect.left;
+        x = Math.max(0, Math.min(x, rect.width)); // Mantém dentro dos limites
+        
+        const percent = (x / rect.width) * 100;
+        imgAfter.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+        sliderHandle.style.left = `${percent}%`;
     }
-  });
 
-  document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-  });
+    // Eventos Mouse
+    slider.addEventListener('mousedown', () => isDragging = true);
+    window.addEventListener('mouseup', () => isDragging = false);
+    slider.addEventListener('mousemove', (e) => {
+        if (isDragging) moveSlider(e);
+    });
+
+    // Eventos Touch (Mobile)
+    slider.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        moveSlider(e); // Move imediatamente pro toque
+    }, {passive: true});
+    window.addEventListener('touchend', () => isDragging = false);
+    slider.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+            // Evita scroll da página enquanto arrasta o slider
+            if(e.cancelable) e.preventDefault(); 
+            moveSlider(e);
+        }
+    }, {passive: false});
+
 </script>
-  
 </body>
 </html>
