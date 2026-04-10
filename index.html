@@ -263,28 +263,32 @@
 </script>
 
 <script>
-    // MUDANÇA AQUI: Reduzido para 5 segundos apenas para você testar.
-    // Depois que ver funcionando, volte para 60.
-    const TEMPO_DESBLOQUEIO_SEGUNDOS = 5; 
     let isUnlocked = false;
 
     const unlockInterval = setInterval(() => {
-        // MUDANÇA AQUI: Verificação extra de segurança para evitar erros da API do YouTube
-        if (typeof player !== 'undefined' && typeof player.getCurrentTime === 'function') {
-            const currentTime = player.getCurrentTime();
+        // Verifica se a API do YouTube já carregou as funções de tempo e duração
+        if (typeof player !== 'undefined' && typeof player.getCurrentTime === 'function' && typeof player.getDuration === 'function') {
             
-            if (currentTime >= TEMPO_DESBLOQUEIO_SEGUNDOS && !isUnlocked) {
+            const currentTime = player.getCurrentTime();
+            const duration = player.getDuration();
+            
+            // Só executa se o vídeo já tiver carregado uma duração válida (maior que 0)
+            // Desbloqueia quando o tempo atual for maior ou igual à duração total menos 5 segundos
+            if (duration > 0 && currentTime >= (duration - 5) && !isUnlocked) {
                 isUnlocked = true;
+                
                 const mainBtn = document.getElementById('main-btn');
                 mainBtn.classList.remove('btn-locked');
                 mainBtn.classList.add('btn-unlocked');
                 mainBtn.innerHTML = '👉 Recuperar minhas fotos agora';
                 mainBtn.removeAttribute('disabled');
-                clearInterval(unlockInterval); 
+                
+                clearInterval(unlockInterval); // Para o contador
             }
         }
     }, 1000);
 
+    // --- AÇÃO DO BOTÃO PRINCIPAL ---
     const mainBtn = document.getElementById('main-btn');
     const hiddenContent = document.getElementById('hidden-content');
 
@@ -297,6 +301,7 @@
         }
     });
 
+    // --- LÓGICA DO SLIDER ANTES/DEPOIS ---
     const slider = document.getElementById('slider');
     const imgAfter = document.getElementById('img-after');
     const sliderHandle = document.getElementById('slider-handle');
