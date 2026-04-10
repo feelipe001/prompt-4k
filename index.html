@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recupere suas fotos</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0b0b;
+  color: #fff;
+  text-align: center;
+}
+
+.container {
+  padding: 20px;
+}
+
+.video {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+}
+
+#btn {
+  margin-top: 15px;
+  padding: 15px;
+  width: 90%;
+  max-width: 350px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background: gray;
+  color: #fff;
+  cursor: not-allowed;
+  transition: 0.3s;
+}
+
+#btn.active {
+  background: linear-gradient(45deg, #00ff88, #00ccff);
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0,255,150,0.6);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Slider */
+.slider-container {
+  margin-top: 30px;
+}
+
+.slider {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: auto;
+}
+
+.slider img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+input[type=range] {
+  width: 90%;
+  margin-top: 10px;
+}
+
+.section {
+  margin-top: 30px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.price {
+  font-size: 28px;
+  color: #00ff88;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <p>Assista até o final para desbloquear</p>
+
+  <!-- VIDEO -->
+  <video class="video" controls>
+    <source src="SEU_VIDEO_AQUI.mp4" type="video/mp4">
+  </video>
+
+  <!-- CONTADOR -->
+  <p id="count">Liberando acesso em 60s...</p>
+
+  <!-- BOTÃO -->
+  <button id="btn">🔒 Conteúdo bloqueado</button>
+
+  <!-- CONTEÚDO -->
+  <div id="content" class="hidden">
+
+    <div class="section">
+      <h3>Arraste para ver a diferença</h3>
+
+      <div class="slider">
+        <img src="antes.jpg">
+        <div class="after" id="after">
+          <img src="depois.jpg">
+        </div>
+      </div>
+
+      <input type="range" min="0" max="100" value="50" id="range">
+    </div>
+
+    <div class="section">
+      <p>Mesma foto. Totalmente recuperada.</p>
+      <p>Sem edição. Sem conhecimento técnico.</p>
+      <p>Só um prompt.</p>
+    </div>
+
+    <div class="section">
+      <p>Quantas memórias você ainda tem… mas não consegue enxergar direito?</p>
+      <p>Agora você pode trazer elas de volta.</p>
+    </div>
+
+    <div class="section">
+      <p><s>De R$29,90</s></p>
+      <p class="price">R$9,90</p>
+    </div>
+
+    <div class="section">
+      <button id="buy" style="padding:15px; width:90%; max-width:350px; border:none; border-radius:10px; background:#00ff88; font-size:16px;">
+        👉 Quero recuperar minhas fotos agora
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+let time = 60;
+let count = document.getElementById("count");
+let btn = document.getElementById("btn");
+let content = document.getElementById("content");
+
+let timer = setInterval(() => {
+  time--;
+  count.innerText = "Liberando acesso em " + time + "s...";
+
+  if (time <= 0) {
+    clearInterval(timer);
+    count.innerText = "Acesso liberado!";
+    btn.classList.add("active");
+    btn.innerText = "👉 Recuperar minhas fotos agora";
+    btn.disabled = false;
+    btn.style.cursor = "pointer";
+  }
+}, 1000);
+
+btn.addEventListener("click", () => {
+  if (time <= 0) {
+    content.classList.remove("hidden");
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+});
+
+// SLIDER
+let range = document.getElementById("range");
+let after = document.getElementById("after");
+
+range.addEventListener("input", () => {
+  after.style.width = range.value + "%";
+});
+</script>
+
+</body>
+</html>
