@@ -117,11 +117,11 @@
         .benefits li { margin-bottom: 10px; font-size: 1rem; color: #ccc; }
         .benefits li::before { content: '✅'; margin-right: 8px; }
 
-        /* ================= GARANTIA ================= */
+        /* ================= GARANTIA (ATUALIZADO) ================= */
         .guarantee-session {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
-            padding: 25px 15px;
+            padding: 30px 15px; /* Aumentado padding superior */
             margin: 25px 0 40px 0;
             display: flex;
             flex-direction: column;
@@ -130,9 +130,13 @@
             border: 1px dashed #444;
         }
         .guarantee-img {
-            width: 130px;
+            /* Alterado para ocupar a largura total do container e ficar grande */
+            width: 100%;
+            max-width: 350px; /* Limite para não ficar gigante em telas maiores que mobile */
             height: auto;
-            margin-bottom: 15px;
+            margin-bottom: 20px; /* Mais espaço abaixo */
+            /* Brilho verde para destacar */
+            filter: drop-shadow(0 0 15px rgba(0, 216, 86, 0.6));
         }
         .guarantee-session h4 {
             font-size: 1.1rem;
@@ -259,7 +263,7 @@
         </a>
 
         <div class="guarantee-session">
-            <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775852494/Sem_nome_1080_x_1080_px_bsecjd.png" alt="Garantia de 90 dias" class="guarantee-img">
+            <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775852494/Sem_nome_1080_x_1080_px_bsecjd.png" alt="Selo de Garantia Incondicional 90 Dias" class="guarantee-img">
             <h4>90 Dias de Garantia Incondicional</h4>
             <p>Eu confio tanto no meu prompt que te dou 3 meses para testar. Se você não gostar do resultado em suas fotos, eu devolvo 100% do seu dinheiro. Sem perguntas.</p>
         </div>
