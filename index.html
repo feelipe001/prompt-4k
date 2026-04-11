@@ -393,6 +393,10 @@
     const tabBtns = document.querySelectorAll('.tab-btn');
     let isDragging = false;
 
+    // --- CORREÇÃO: Carrega a primeira imagem automaticamente ao abrir ---
+    imgBefore.src = fotosExemplos[0].antes;
+    imgAfter.src = fotosExemplos[0].depois;
+
     function moveSlider(e) {
         const rect = slider.getBoundingClientRect();
         let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
