@@ -67,29 +67,33 @@
         .hidden-content { display: none; opacity: 0; padding: 0 20px 40px 20px; transition: opacity 1s ease-in; }
         .hidden-content.show { display: block; opacity: 1; }
 
-        /* ================= SLIDER E ABAS ================= */
+        /* ================= SLIDERS EMPILHADOS ================= */
         .slider-section { margin: 30px 0; }
         
-        .example-tabs { 
-            display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; 
-            padding-bottom: 8px; scrollbar-width: none;
+        .slider-item-wrapper {
+            margin-bottom: 35px;
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #333;
         }
-        .example-tabs::-webkit-scrollbar { display: none; }
-        
-        .tab-btn { 
-            background: #222; color: #aaa; border: 1px solid #444; padding: 10px 16px; 
-            border-radius: 30px; font-size: 0.9rem; font-weight: 600; cursor: pointer; 
-            white-space: nowrap; transition: all 0.2s ease; 
-        }
-        .tab-btn.active { background: #00d856; color: #000; border-color: #00d856; font-weight: bold; }
 
-        .slider-container { position: relative; width: 100%; height: 350px; background: #222; border-radius: 12px; overflow: hidden; border: 2px solid #333; }
+        .slider-title {
+            text-align: center;
+            color: #00d856;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .slider-container { position: relative; width: 100%; height: 350px; background: #222; border-radius: 8px; overflow: hidden; border: 2px solid #222; }
         .slider-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .img-after { clip-path: inset(0 50% 0 0); }
         .slider-handle { position: absolute; top: 0; left: 50%; width: 4px; height: 100%; background: #00d856; transform: translateX(-50%); cursor: ew-resize; z-index: 5; display: flex; align-items: center; justify-content: center; }
         .slider-handle-btn { width: 36px; height: 36px; background: #00d856; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; font-size: 14px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
 
-        /* ================= FEEDBACKS (CARROSSEL) ================= */
+        /* ================= FEEDBACKS E TEXTOS ================= */
         .feedback-section { margin: 40px 0; }
         .feedback-wrapper { 
             display: flex; gap: 15px; overflow-x: auto; scroll-snap-type: x mandatory; 
@@ -105,7 +109,6 @@
         .feedback-card p { font-style: italic; color: #ddd; font-size: 1rem; line-height: 1.5; margin-bottom: 15px; }
         .author { font-weight: bold; color: #00d856; text-align: right; font-size: 0.95rem; }
 
-        /* ================= TEXTOS E OFERTA ================= */
         .scannable-texts { margin: 30px 0; display: flex; flex-direction: column; gap: 15px; }
         .scan-item { background: #1a1a1a; padding: 15px; border-radius: 8px; border-left: 4px solid #00d856; font-weight: 600; font-size: 1.05rem; }
         .emotional-text { margin: 30px 0; font-size: 1.2rem; line-height: 1.6; font-style: italic; color: #dddddd; text-align: center; }
@@ -117,11 +120,11 @@
         .benefits li { margin-bottom: 10px; font-size: 1rem; color: #ccc; }
         .benefits li::before { content: '✅'; margin-right: 8px; }
 
-        /* ================= GARANTIA (ATUALIZADO) ================= */
+        /* ================= GARANTIA ================= */
         .guarantee-session {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
-            padding: 30px 15px; /* Aumentado padding superior */
+            padding: 30px 15px; 
             margin: 25px 0 40px 0;
             display: flex;
             flex-direction: column;
@@ -130,25 +133,14 @@
             border: 1px dashed #444;
         }
         .guarantee-img {
-            /* Alterado para ocupar a largura total do container e ficar grande */
             width: 100%;
-            max-width: 350px; /* Limite para não ficar gigante em telas maiores que mobile */
+            max-width: 350px; 
             height: auto;
-            margin-bottom: 20px; /* Mais espaço abaixo */
-            /* Brilho verde para destacar */
+            margin-bottom: 20px; 
             filter: drop-shadow(0 0 15px rgba(0, 216, 86, 0.6));
         }
-        .guarantee-session h4 {
-            font-size: 1.1rem;
-            color: #fff;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        .guarantee-session p {
-            font-size: 0.9rem;
-            color: #aaa;
-            line-height: 1.4;
-        }
+        .guarantee-session h4 { font-size: 1.1rem; color: #fff; margin-bottom: 8px; text-transform: uppercase; }
+        .guarantee-session p { font-size: 0.9rem; color: #aaa; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -194,20 +186,44 @@
         </div>
 
         <div class="slider-section">
-            <h3 class="text-center" style="margin-bottom: 15px;">Arraste para ver a mágica 👇</h3>
-            <div class="example-tabs">
-                <button class="tab-btn active" data-index="0">Família</button>
-                <button class="tab-btn" data-index="1">Baixa Resolução</button>
-                <button class="tab-btn" data-index="2">Preto e Branco</button>
-                <button class="tab-btn" data-index="3">Rosto</button>
-            </div>
-            <div class="slider-container" id="slider">
-                <img src="https://via.placeholder.com/400x500/333333/ffffff?text=Familia+Antes" alt="Antes" class="slider-img img-before" id="img-before">
-                <img src="https://via.placeholder.com/400x500/00d856/000000?text=Familia+Depois+(4K)" alt="Depois" class="slider-img img-after" id="img-after">
-                <div class="slider-handle" id="slider-handle">
-                    <div class="slider-handle-btn">⟨⟩</div>
+            <h3 class="text-center" style="margin-bottom: 25px;">Arraste para ver a mágica 👇</h3>
+            
+            <div class="slider-item-wrapper">
+                <h4 class="slider-title">Família</h4>
+                <div class="slider-container">
+                    <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775854523/familia_antes_udfbty.jpg" alt="Antes" class="slider-img img-before">
+                    <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775854524/familia_depois_dhhwvh.jpg" alt="Depois" class="slider-img img-after">
+                    <div class="slider-handle"><div class="slider-handle-btn">⟨⟩</div></div>
                 </div>
             </div>
+
+            <div class="slider-item-wrapper">
+                <h4 class="slider-title">Baixa Resolução</h4>
+                <div class="slider-container">
+                    <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775854523/baixa_resolu%C3%A7%C3%A3o_antes_f1h6r8.jpg" alt="Antes" class="slider-img img-before">
+                    <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775854523/baixa_resolu%C3%A7%C3%A3o_depois_o36czq.jpg" alt="Depois" class="slider-img img-after">
+                    <div class="slider-handle"><div class="slider-handle-btn">⟨⟩</div></div>
+                </div>
+            </div>
+
+            <div class="slider-item-wrapper">
+                <h4 class="slider-title">Preto e Branco</h4>
+                <div class="slider-container">
+                    <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775855209/preto_e_branco_antes_eaujxi.jpg" alt="Antes" class="slider-img img-before">
+                    <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775855209/preto_e_branco_depois_iw43am.jpg" alt="Depois" class="slider-img img-after">
+                    <div class="slider-handle"><div class="slider-handle-btn">⟨⟩</div></div>
+                </div>
+            </div>
+
+            <div class="slider-item-wrapper">
+                <h4 class="slider-title">Restaurar Rosto</h4>
+                <div class="slider-container">
+                    <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775855616/rosto_antes_ebm23g.jpg" alt="Antes" class="slider-img img-before">
+                    <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775855616/rosto_depois_qf0jcq.jpg" alt="Depois" class="slider-img img-after">
+                    <div class="slider-handle"><div class="slider-handle-btn">⟨⟩</div></div>
+                </div>
+            </div>
+
         </div>
 
         <div class="scannable-texts">
@@ -219,31 +235,10 @@
         <div class="feedback-section">
             <h3 class="text-center" style="margin-bottom: 20px;">O que estão dizendo 👇</h3>
             <div class="feedback-wrapper" id="feedback-wrapper">
-                
-                <div class="feedback-card">
-                    <div class="stars">★★★★★</div>
-                    <p>"Recuperei a única foto do meu avô. Chorei muito quando vi o resultado! É muito fácil de usar. Obrigada."</p>
-                    <div class="author">- Maria S.</div>
-                </div>
-
-                <div class="feedback-card">
-                    <div class="stars">★★★★★</div>
-                    <p>"Não entendo nada de computador, mas foi literalmente só copiar o prompt e funcionou na hora. Vale cada centavo."</p>
-                    <div class="author">- João P.</div>
-                </div>
-
-                <div class="feedback-card">
-                    <div class="stars">★★★★★</div>
-                    <p>"Achei que era mentira, mas por 9,90 resolvi testar. Minhas fotos antigas de casamento ficaram perfeitas em 4K!"</p>
-                    <div class="author">- Ana L.</div>
-                </div>
-
-                <div class="feedback-card">
-                    <div class="stars">★★★★★</div>
-                    <p>"Testei em uma foto escura e rasgada de 1980 e o rosto da minha mãe ficou incrivelmente nítido. Surpreendente."</p>
-                    <div class="author">- Carlos R.</div>
-                </div>
-
+                <div class="feedback-card"><div class="stars">★★★★★</div><p>"Recuperei a única foto do meu avô. Chorei muito quando vi o resultado! É muito fácil de usar. Obrigada."</p><div class="author">- Maria S.</div></div>
+                <div class="feedback-card"><div class="stars">★★★★★</div><p>"Não entendo nada de computador, mas foi literalmente só copiar o prompt e funcionou na hora. Vale cada centavo."</p><div class="author">- João P.</div></div>
+                <div class="feedback-card"><div class="stars">★★★★★</div><p>"Achei que era mentira, mas por 9,90 resolvi testar. Minhas fotos antigas de casamento ficaram perfeitas em 4K!"</p><div class="author">- Ana L.</div></div>
+                <div class="feedback-card"><div class="stars">★★★★★</div><p>"Testei em uma foto escura e rasgada de 1980 e o rosto da minha mãe ficou incrivelmente nítido. Surpreendente."</p><div class="author">- Carlos R.</div></div>
             </div>
         </div>
 
@@ -258,7 +253,7 @@
             </ul>
         </div>
 
-        <a href="https://checkout.perfectpay.com.br/pay/PPU38CQ85PO?" class="btn btn-unlocked">
+        <a href="LINK_DO_SEU_CHECKOUT_AQUI" class="btn btn-unlocked">
             👉 Quero recuperar minhas fotos agora
         </a>
 
@@ -378,55 +373,35 @@
         }
     });
 
-    // --- LÓGICA DO SLIDER ANTES/DEPOIS ---
-    const fotosExemplos = [
-        { antes: "https://res.cloudinary.com/dxpygpngo/image/upload/v1775854523/familia_antes_udfbty.jpg", depois: "https://res.cloudinary.com/dxpygpngo/image/upload/v1775854524/familia_depois_dhhwvh.jpg" },
-        { antes: "https://res.cloudinary.com/dxpygpngo/image/upload/v1775854523/baixa_resolu%C3%A7%C3%A3o_antes_f1h6r8.jpg", depois: "https://res.cloudinary.com/dxpygpngo/image/upload/v1775854523/baixa_resolu%C3%A7%C3%A3o_depois_o36czq.jpg" },
-        { antes: "https://res.cloudinary.com/dxpygpngo/image/upload/v1775855209/preto_e_branco_antes_eaujxi.jpg", depois: "https://res.cloudinary.com/dxpygpngo/image/upload/v1775855209/preto_e_branco_depois_iw43am.jpg" },
-        { antes: "https://res.cloudinary.com/dxpygpngo/image/upload/v1775855616/rosto_antes_ebm23g.jpg", depois: "https://res.cloudinary.com/dxpygpngo/image/upload/v1775855616/rosto_depois_qf0jcq.jpg" }
-    ];
+    // --- LÓGICA DO SLIDER PARA MÚLTIPLAS IMAGENS EMPILHADAS ---
+    const sliders = document.querySelectorAll('.slider-container');
 
-    const slider = document.getElementById('slider');
-    const imgBefore = document.getElementById('img-before');
-    const imgAfter = document.getElementById('img-after');
-    const sliderHandle = document.getElementById('slider-handle');
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    let isDragging = false;
+    sliders.forEach(slider => {
+        const imgAfter = slider.querySelector('.img-after');
+        const sliderHandle = slider.querySelector('.slider-handle');
+        let isDragging = false;
 
-    // --- CORREÇÃO: Carrega a primeira imagem automaticamente ao abrir ---
-    imgBefore.src = fotosExemplos[0].antes;
-    imgAfter.src = fotosExemplos[0].depois;
+        function moveSlider(e) {
+            const rect = slider.getBoundingClientRect();
+            let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            let x = clientX - rect.left;
+            x = Math.max(0, Math.min(x, rect.width)); 
+            const percent = (x / rect.width) * 100;
+            imgAfter.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            sliderHandle.style.left = `${percent}%`;
+        }
 
-    function moveSlider(e) {
-        const rect = slider.getBoundingClientRect();
-        let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        let x = clientX - rect.left;
-        x = Math.max(0, Math.min(x, rect.width)); 
-        const percent = (x / rect.width) * 100;
-        imgAfter.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-        sliderHandle.style.left = `${percent}%`;
-    }
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            tabBtns.forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            const index = e.target.getAttribute('data-index');
-            imgBefore.src = fotosExemplos[index].antes;
-            imgAfter.src = fotosExemplos[index].depois;
-            imgAfter.style.clipPath = `inset(0 50% 0 0)`;
-            sliderHandle.style.left = `50%`;
-        });
+        slider.addEventListener('mousedown', () => isDragging = true);
+        window.addEventListener('mouseup', () => isDragging = false);
+        slider.addEventListener('mousemove', (e) => { if (isDragging) moveSlider(e); });
+        
+        slider.addEventListener('touchstart', (e) => { isDragging = true; moveSlider(e); }, {passive: true});
+        window.addEventListener('touchend', () => isDragging = false);
+        slider.addEventListener('touchmove', (e) => {
+            if (isDragging) { if(e.cancelable) e.preventDefault(); moveSlider(e); }
+        }, {passive: false});
     });
 
-    slider.addEventListener('mousedown', () => isDragging = true);
-    window.addEventListener('mouseup', () => isDragging = false);
-    slider.addEventListener('mousemove', (e) => { if (isDragging) moveSlider(e); });
-    slider.addEventListener('touchstart', (e) => { isDragging = true; moveSlider(e); }, {passive: true});
-    window.addEventListener('touchend', () => isDragging = false);
-    slider.addEventListener('touchmove', (e) => {
-        if (isDragging) { if(e.cancelable) e.preventDefault(); moveSlider(e); }
-    }, {passive: false});
 </script>
 
 </body>
