@@ -16,10 +16,11 @@
         .header-text { 
             font-size: 0.85rem; 
             color: #aaaaaa; 
-            padding: 8vh 10px 20px 10px; /* 8vh empurra o texto e o vídeo para a zona de conforto visual */
+            padding: 8vh 10px 20px 10px; 
             font-weight: 500; 
             text-transform: uppercase; 
             letter-spacing: 1px; 
+            transition: padding 0.5s ease;
         }
         
         /* ================= Estilos do Reprodutor e Contador ================= */
@@ -95,11 +96,10 @@
         iframe[src*="youtube.com"]::after { content: ""; position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: transparent; z-index: 10; }
 
         /* ================= Estilos do Restante da Página ================= */
-        /* Ajuste de UX: Mais respiro ao redor do botão bloqueado inicial */
         .btn-wrapper { padding: 35px 20px; }
         .btn { display: block; width: 100%; padding: 18px; border-radius: 8px; font-size: 1.2rem; font-weight: 800; text-align: center; text-decoration: none; border: none; transition: all 0.3s ease; }
         .btn-locked { background: #222; color: #666; cursor: not-allowed; }
-        .btn-unlocked { background: #00d856; color: #000; cursor: pointer; animation: pulse-green 2s infinite; }
+        .btn-unlocked { background: #00d856; color: #000; cursor: pointer; animation: pulse-green 2s infinite; margin-bottom: 20px;}
         
         @keyframes pulse-green {
             0% { box-shadow: 0 0 0 0 rgba(0, 216, 86, 0.6); }
@@ -205,6 +205,59 @@
         }
         .guarantee-session h4 { font-size: 1.1rem; color: #fff; margin-bottom: 8px; text-transform: uppercase; }
         .guarantee-session p { font-size: 0.9rem; color: #aaa; line-height: 1.4; }
+
+        /* ================= PERGUNTAS FREQUENTES (FAQ) ================= */
+        .faq-section {
+            margin: 50px 0 30px 0;
+        }
+        .faq-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .faq-item {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .faq-question {
+            padding: 18px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #00d856;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .faq-icon {
+            font-size: 1.5rem;
+            font-weight: 300;
+            transition: transform 0.3s ease;
+        }
+        .faq-answer {
+            max-height: 0;
+            padding: 0 20px;
+            color: #ddd;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        /* Classe ativa para mostrar a resposta */
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Suficiente para o texto */
+            padding: 0 20px 20px 20px;
+            opacity: 1;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg); /* Transforma o + em x */
+        }
     </style>
 </head>
 <body>
@@ -337,6 +390,35 @@
             <p>Eu confio tanto no meu prompt que te dou 3 meses para testar. Se você não gostar do resultado em suas fotos, eu devolvo 100% do seu dinheiro. Sem perguntas.</p>
         </div>
 
+        <div class="faq-section">
+            <h3 class="faq-title">Perguntas Frequentes</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question">Preciso ter um computador? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Não! Você pode fazer tudo 100% pelo seu celular, seja Android ou iPhone. O processo é extremamente leve e rápido.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Vou ter que pagar algum aplicativo? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Não. Nós ensinamos a usar o prompt em ferramentas de Inteligência Artificial totalmente gratuitas. Você só paga pelo acesso ao nosso prompt hoje e nada mais.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Como vou receber o acesso? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Assim que o pagamento for confirmado (Pix e Cartão aprovam na hora), você receberá o material com o prompt direto no e-mail que você cadastrar na compra.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Eu não sei mexer em IA, vou conseguir? <span class="faq-icon">+</span></div>
+                <div class="faq-answer">Com certeza. O nosso produto foi criado justamente para pessoas leigas. Literalmente, tudo que você precisa saber é "Copiar e Colar" o texto que vamos te enviar. A inteligência artificial fará todo o trabalho duro.</div>
+            </div>
+            
+        </div>
+
+        <a href="LINK_DO_SEU_CHECKOUT_AQUI" class="btn btn-unlocked" style="margin-top: 10px;">
+            👉 Sim, quero recuperar agora!
+        </a>
+
     </div>
 </div>
 
@@ -425,8 +507,8 @@
                 mainBtn.innerHTML = '👉 Recuperar minhas fotos agora';
                 mainBtn.removeAttribute('disabled');
                 
-                // UX: Remove o espaçamento de "vazio" quando revela o resto da página
-                document.querySelector('.header-text').style.paddingTop = '25px';
+                // UX: Remove o espaçamento do topo para revelar a página
+                document.querySelector('.header-text').style.paddingTop = '15px';
                 
                 clearInterval(unlockInterval); 
             }
@@ -493,6 +575,16 @@
         slider.addEventListener('touchmove', (e) => {
             if (isDragging) { if(e.cancelable) e.preventDefault(); moveSlider(e); }
         }, {passive: false});
+    });
+
+    // --- LÓGICA DO ACORDEÃO (FAQ) ---
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const parent = question.parentElement;
+            // Se já estiver aberto, fecha. Se estiver fechado, abre.
+            parent.classList.toggle('active');
+        });
     });
 
 </script>
