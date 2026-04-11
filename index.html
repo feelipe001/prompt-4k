@@ -113,11 +113,11 @@
         .scan-item { background: #1a1a1a; padding: 15px; border-radius: 8px; border-left: 4px solid #00d856; font-weight: 600; font-size: 1.05rem; }
         .emotional-text { margin: 30px 0; font-size: 1.2rem; line-height: 1.6; font-style: italic; color: #dddddd; text-align: center; }
 
-        /* ================= OFERTA EM IMAGEM ================= */
+        /* ================= OFERTA (IMAGEM + CAIXA DE VALOR) ================= */
         .offer-image-container {
             width: 100%;
             text-align: center;
-            margin: 30px 0 20px 0;
+            margin: 30px 0 15px 0;
         }
         .offer-img {
             width: 100%;
@@ -126,6 +126,20 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
+        
+        .offer-box { 
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d); 
+            padding: 25px; 
+            border-radius: 12px; 
+            border: 1px solid #333; 
+            text-align: center; 
+            margin-bottom: 25px; 
+        }
+        .price-old { text-decoration: line-through; color: #888; font-size: 1.1rem; }
+        .price-new { font-size: 2.5rem; color: #00d856; font-weight: 900; margin: 10px 0; }
+        .benefits { list-style: none; margin-top: 15px; text-align: left; }
+        .benefits li { margin-bottom: 10px; font-size: 1rem; color: #ccc; }
+        .benefits li::before { content: '✅'; margin-right: 8px; }
 
         /* ================= GARANTIA ================= */
         .guarantee-session {
@@ -250,7 +264,18 @@
         </div>
 
         <div class="offer-image-container">
-            <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775915779/Design_sem_nome_1_udyor4.jpg" alt="Oferta Especial" class="offer-img">
+            <img src="https://res.cloudinary.com/dxpygpngo/image/upload/v1775915779/Design_sem_nome_1_udyor4.jpg" alt="Capa do Produto" class="offer-img">
+        </div>
+
+        <div class="offer-box">
+            <p style="font-weight: bold; color: #fff; margin-bottom: 5px;">Acesso Imediato ao Prompt:</p>
+            <div class="price-old">De R$ 29,90</div>
+            <div class="price-new">Por R$ 9,90</div>
+            <ul class="benefits">
+                <li>Acesso imediato no e-mail</li>
+                <li>Funciona 100% no celular</li>
+                <li>Não precisa de aplicativos pagos</li>
+            </ul>
         </div>
 
         <a href="LINK_DO_SEU_CHECKOUT_AQUI" class="btn btn-unlocked">
